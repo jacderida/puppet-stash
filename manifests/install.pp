@@ -91,9 +91,18 @@ class stash::install(
     subscribe   => User[$stash::user]
   } ->
 
-  file { '/etc/init.d/stash':
-    content => template('stash/stash.initscript.erb'),
-    mode    => '0755',
+  case $::operatingsystem {
+    'RedHat', 'CentOS': {
+      file { '/etc/init.d/stash':
+        content => template('stash/stash.initscript.centos.erb'),
+        mode    => '0755',
+      }
+    }
+    default: {
+      file { '/etc/init.d/stash':
+        content => template('stash/stash.initscript.erb'),
+        mode    => '0755',
+      }
+    }
   }
-
 }
