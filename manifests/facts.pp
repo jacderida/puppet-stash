@@ -19,6 +19,10 @@ class stash::facts(
   $port   = '7990',
   $uri    = '127.0.0.1',
 ) {
+  exec { 'Create facter directory':
+    command => '/usr/bin/sudo mkdir -p /etc/facter/facts.d'
+  } ->
+
   file { '/etc/facter/facts.d/stash_facts.rb':
     ensure  => $ensure,
     content => template('stash/facts.rb.erb'),
